@@ -1,9 +1,8 @@
 package pl.umcs.storage;
 
-import tools.jackson.databind.ObjectMapper;
-import tools.jackson.databind.SerializationFeature;
-import tools.jackson.databind.json.JsonMapper;
-import tools.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,10 +13,9 @@ public class JsonStorage {
     private final ObjectMapper mapper;
 
     public JsonStorage() {
-        this.mapper = JsonMapper.builder()
-                .addModule(new JavaTimeModule())
-                .configure(SerializationFeature.INDENT_OUTPUT, true)
-                .build();
+        this.mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
     }
 
     public <T> void saveList(File file, List<T> items) throws IOException {
@@ -25,7 +23,7 @@ public class JsonStorage {
     }
 
     public <T> List<T> loadList(File file, Class<T> type) throws IOException {
-        if (!file.exists()) {
+        if (!file.exists() || file.length() == 0) {
             return new ArrayList<>();
         }
         return mapper.readValue(file,
