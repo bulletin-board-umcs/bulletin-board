@@ -364,7 +364,7 @@ public class ClientSession {
         } else {
             System.out.println("\nComments (" + comments.size() + "):");
             for (Comment comment : comments) {
-                System.out.println("  • " + comment.getContent());
+                System.out.println("  • " + comment.getAuthorUsername() + " • " + comment.getContent());
             }
         }
         System.out.println("══════════════════════════════════════════════════");
