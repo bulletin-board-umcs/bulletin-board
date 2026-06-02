@@ -30,4 +30,6 @@ public interface BulletinBoardService extends Remote {
                    AnnouncementListener listener) throws RemoteException;
     void unsubscribe(String token, AnnouncementCategory category,
                      AnnouncementListener listener) throws RemoteException;
+
+    List<AnnouncementCategory> getSubscribedCategories(String token) throws RemoteException;
 }

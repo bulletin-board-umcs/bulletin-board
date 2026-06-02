@@ -137,7 +137,7 @@ public class BulletinBoardServiceImplementation extends UnicastRemoteObject impl
 
         System.out.println(
                 "Announcement with id: " + id +
-                " has been removed by " + user.getUsername()
+                        " has been removed by " + user.getUsername()
         );
     }
 
@@ -169,9 +169,9 @@ public class BulletinBoardServiceImplementation extends UnicastRemoteObject impl
             AnnouncementCategory category,
             AnnouncementListener listener
     ) throws RemoteException {
-        requireUser(token);
+        User user = requireUser(token);
 
-        notificationManager.subscribe(category, listener);
+        notificationManager.subscribe(user.getUsername(), category, listener);
     }
 
     @Override
@@ -180,9 +180,9 @@ public class BulletinBoardServiceImplementation extends UnicastRemoteObject impl
             AnnouncementCategory category,
             AnnouncementListener listener
     ) throws RemoteException {
-        requireUser(token);
+        User user = requireUser(token);
 
-        notificationManager.unsubscribe(category, listener);
+        notificationManager.unsubscribe(user.getUsername(), category, listener);
     }
 
     private User requireUser(String token) throws RemoteException {
@@ -191,5 +191,12 @@ public class BulletinBoardServiceImplementation extends UnicastRemoteObject impl
         } catch (IllegalArgumentException e) {
             throw new RemoteException(e.getMessage());
         }
+    }
+
+    @Override
+    public List<AnnouncementCategory> getSubscribedCategories(String token)
+            throws RemoteException {
+        User user = requireUser(token);
+        return notificationManager.getSubscribedCategories(user.getUsername());
     }
 }

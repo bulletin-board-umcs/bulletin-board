@@ -29,4 +29,8 @@ public class JsonStorage {
         return mapper.readValue(file,
                 mapper.getTypeFactory().constructCollectionType(List.class, type));
     }
+
+    public ObjectMapper getMapper() {
+        return mapper;
+    }
 }

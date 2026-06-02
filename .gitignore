@@ -34,6 +34,7 @@ build/
 ### Data files ###
 users.json
 announcements.json
+subscriptions.json
 
 ### VS Code ###
 .vscode/

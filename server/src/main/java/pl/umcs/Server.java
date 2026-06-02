@@ -16,6 +16,7 @@ public class Server {
     private static final String SERVICE_NAME = "BulletinBoard";
     private static final String ANNOUNCEMENTS_FILE = "announcements.json";
     private static final String USERS_FILE = "users.json";
+    private static final String SUBSCRIPTIONS_FILE = "subscriptions.json";
 
     public static void main(String[] args) {
 
@@ -33,7 +34,10 @@ public class Server {
             );
 
             SessionManager sessionManager = new SessionManager();
-            NotificationManager notificationManager = new NotificationManager();
+            NotificationManager notificationManager = new NotificationManager(
+                    jsonStorage,
+                    SUBSCRIPTIONS_FILE
+            );
 
             BulletinBoardService service = new BulletinBoardServiceImplementation(
                     userStore,
@@ -52,7 +56,9 @@ public class Server {
             System.out.println("Server started on port: " + PORT);
             System.out.println("Service name: " + SERVICE_NAME);
             System.out.println(
-                    "Data files: " + USERS_FILE + ", " + ANNOUNCEMENTS_FILE
+                    "Data files: " + USERS_FILE + ", "
+                            + ANNOUNCEMENTS_FILE + ", "
+                            + SUBSCRIPTIONS_FILE
             );
 
         } catch (RemoteException e) {

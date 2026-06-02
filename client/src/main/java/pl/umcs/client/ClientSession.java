@@ -75,8 +75,23 @@ public class ClientSession {
             token = service.login(username, password);
             currentUsername = username;
             System.out.println("Logged in as " + username + ".");
+
+            restoreSubscriptions();
         } catch (RemoteException e) {
             printError("Login failed", e);
+        }
+    }
+
+    private void restoreSubscriptions() {
+        try {
+            List<AnnouncementCategory> saved = service.getSubscribedCategories(token);
+            if (saved.isEmpty()) return;
+
+            for (AnnouncementCategory category : saved) {
+                subscriptionManager.subscribe(token, category);
+            }
+        } catch (RemoteException e) {
+            System.err.println("Warning: could not restore subscriptions: " + e.getMessage());
         }
     }
 
@@ -106,7 +121,7 @@ public class ClientSession {
         System.out.println("  7) Subscribe to category");
         System.out.println("  8) Unsubscribe from category");
         System.out.println("  9) Show active subscriptions");
-        System.out.println("  10) Browse in subsribed categories");
+        System.out.println("  10) Browse in subscribed categories");
         System.out.println("  0) Logout");
         System.out.print("Choice: ");
 
@@ -289,7 +304,7 @@ public class ClientSession {
 
     private void performLogout() {
         try {
-            subscriptionManager.unsubscribeAll(token);
+            //subscriptionManager.unsubscribeAll(token);
             service.logout(token);
             System.out.println("Logged out.");
         } catch (RemoteException e) {
