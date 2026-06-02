@@ -59,28 +59,6 @@ public class SubscriptionManager {
         }
     }
 
-
-    public void unsubscribeAll(String token) {
-        synchronized (listeners) {
-            for (Map.Entry<AnnouncementCategory, AnnouncementListenerImpl> entry
-                    : listeners.entrySet()) {
-
-                AnnouncementCategory category = entry.getKey();
-                AnnouncementListenerImpl listener = entry.getValue();
-
-                try {
-                    service.unsubscribe(token, category, listener);
-                } catch (RemoteException e) {
-                    System.err.println("Warning: could not unsubscribe from "
-                            + category + ": " + e.getMessage());
-                } finally {
-                    unexport(listener);
-                }
-            }
-            listeners.clear();
-        }
-    }
-
     public void printSubscriptions() {
         synchronized (listeners) {
             if (listeners.isEmpty()) {

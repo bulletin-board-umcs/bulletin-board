@@ -304,7 +304,6 @@ public class ClientSession {
 
     private void performLogout() {
         try {
-            //subscriptionManager.unsubscribeAll(token);
             service.logout(token);
             System.out.println("Logged out.");
         } catch (RemoteException e) {
