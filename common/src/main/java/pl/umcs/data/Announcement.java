@@ -1,6 +1,7 @@
 package pl.umcs.data;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
@@ -73,6 +74,7 @@ public class Announcement implements Serializable {
         comments.add(comment);
     }
 
+    @JsonIgnore
     public boolean isExpired() {
         return LocalDateTime.now().isAfter(expiresAt);
     }
