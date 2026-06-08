@@ -100,7 +100,7 @@ public class NotificationManager {
         if (!file.exists()) {
             try {
                 file.createNewFile();
-                persist();
+                //persist();
             } catch (IOException e) {
                 System.out.println(
                         "An error occurred while creating subscriptions file"
