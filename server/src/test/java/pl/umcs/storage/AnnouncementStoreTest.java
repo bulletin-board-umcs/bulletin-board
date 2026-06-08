@@ -62,12 +62,15 @@ public class AnnouncementStoreTest {
     @Test
     void testRemoveById() {
         Announcement announcement = Announcement.create(
-                "title", "content", "username", AnnouncementCategory.OTHER
+                "title", "content", "admin", AnnouncementCategory.OTHER
         );
         store.add(announcement);
-        
-        assertTrue(store.removeById(announcement.getId()));
-        assertNull(store.getById(announcement.getId()));
+        assertTrue(store.removeById(announcement.getId(), "admin", true));
+
+        assertFalse(store.removeById(announcement.getId(), "user", false));
+
+        store.add(announcement);
+        assertTrue(store.removeById(announcement.getId(), "user", true));
     }
 
     @Test

@@ -112,27 +112,20 @@ public class BulletinBoardServiceImplementation extends UnicastRemoteObject impl
     @Override
     public void deleteAnnouncement(String token, UUID id) throws RemoteException {
         User user = requireUser(token);
-        Announcement announcement = announcementStore.getById(id);
 
-        if (announcement == null) {
-            throw new RemoteException("This announcement does not exist.");
-        }
-
-        boolean isOwner = announcement.getAuthorUsername()
-                .equals(user.getUsername());
-
-        if (!isOwner && !user.isAdmin()) {
-            throw new RemoteException(
-                    "Announcement cannot be deleted: permission denied"
+        try {
+            boolean removed = announcementStore.removeById(
+                    id, user.getUsername(), user.isAdmin()
             );
+            if (!removed) {
+                throw new RemoteException("This announcement does not exist.");
+            }
+        } catch (IllegalArgumentException e) {
+            throw new RemoteException(e.getMessage());
         }
 
-        announcementStore.removeById(id);
-
-        System.out.println(
-                "Announcement with id: " + id +
-                        " has been removed by " + user.getUsername()
-        );
+        System.out.println("Announcement with id: " + id
+                + " has been removed by " + user.getUsername());
     }
 
     @Override

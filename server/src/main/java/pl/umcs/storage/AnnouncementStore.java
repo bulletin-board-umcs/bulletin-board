@@ -76,16 +76,25 @@ public class AnnouncementStore {
         }
     }
 
-    public boolean removeById(UUID id) {
+    public boolean removeById(UUID id, String username, boolean isAdmin) {
         lock.writeLock().lock();
         try {
-            boolean removed = announcements.remove(id) != null;
+            Announcement announcement = announcements.get(id);
 
-            if (removed) {
-                persist();
+            if (announcement == null) {
+                return false;
             }
 
-            return removed;
+            boolean isOwner = announcement.getAuthorUsername().equals(username);
+            if (!isOwner && !isAdmin) {
+                throw new IllegalArgumentException(
+                        "Announcement cannot be deleted: permission denied"
+                );
+            }
+
+            announcements.remove(id);
+            persist();
+            return true;
         } finally {
             lock.writeLock().unlock();
         }
