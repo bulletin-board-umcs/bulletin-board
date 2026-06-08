@@ -5,9 +5,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
 
-public record User(String username, String password, boolean admin) implements Serializable {
+public class User implements Serializable {
+    private final String username;
+    private final String password;
+
+    private final boolean admin;
+
     public User() {
-        this(null, null, false);
+        this.username = null;
+        this.password = null;
+        this.admin = false;
     }
 
     @JsonCreator
@@ -23,5 +30,17 @@ public record User(String username, String password, boolean admin) implements S
 
     public static User create(String username, String password, boolean admin) {
         return new User(username, password, admin);
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public boolean isAdmin() {
+        return admin;
     }
 }
