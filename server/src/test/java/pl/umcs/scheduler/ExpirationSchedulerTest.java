@@ -37,7 +37,6 @@ class ExpirationSchedulerTest {
 
     @Test
     void testSchedulerRemovesExpired() throws InterruptedException {
-        // 1. Add an expired announcement
         LocalDateTime past = LocalDateTime.now().minusDays(2);
         Announcement expired = new Announcement(
                 UUID.randomUUID(),
@@ -53,14 +52,11 @@ class ExpirationSchedulerTest {
 
         scheduler.start();
         
-        // Verify it didn't crash
         assertNotNull(scheduler);
     }
     
     @Test
     void testManualTrigger() {
-        // Since we want to test every outcome, let's test the logic inside removeExpired
-        // 1. Add expired and non-expired
         store.add(Announcement.create("title", "content", "username", AnnouncementCategory.OTHER));
         
         LocalDateTime past = LocalDateTime.now().minusDays(2);
