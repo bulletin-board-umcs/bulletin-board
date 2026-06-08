@@ -47,30 +47,50 @@ public class BulletinBoardServiceImplementation extends UnicastRemoteObject impl
         return token;
     }
 
+//    @Override
+//    public void register(String username, String password) throws RemoteException {
+//        if (username == null || username.isBlank()) {
+//            throw new RemoteException("Username cannot be null or blank.");
+//        }
+//
+//        if (password == null || password.length() < 4) {
+//            throw new RemoteException(
+//                    "Password must be at least 4 characters long."
+//            );
+//        }
+//
+//        if (userStore.checkIfUserExists(username)) {
+//            throw new RemoteException(
+//                    "User '" + username + "' already exists."
+//            );
+//        }
+//
+//        userStore.addUser(
+//                new User(username, userStore.hash(password), false)
+//        );
+//        System.out.println(
+//                "User '" + username + "' has been successfully registered."
+//        );
+//    }
+
     @Override
     public void register(String username, String password) throws RemoteException {
         if (username == null || username.isBlank()) {
             throw new RemoteException("Username cannot be null or blank.");
         }
-
         if (password == null || password.length() < 4) {
-            throw new RemoteException(
-                    "Password must be at least 4 characters long."
-            );
+            throw new RemoteException("Password must be at least 4 characters long.");
         }
 
-        if (userStore.checkIfUserExists(username)) {
-            throw new RemoteException(
-                    "User '" + username + "' already exists."
-            );
-        }
-
-        userStore.addUser(
+        boolean added = userStore.addUser(
                 new User(username, userStore.hash(password), false)
         );
-        System.out.println(
-                "User '" + username + "' has been successfully registered."
-        );
+
+        if (!added) {
+            throw new RemoteException("User '" + username + "' already exists.");
+        }
+
+        System.out.println("User '" + username + "' has been successfully registered.");
     }
 
     @Override
