@@ -4,19 +4,10 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.util.UUID;
 
-public class User implements Serializable {
-    private final String username;
-    private final String password;
-
-    private final boolean admin;
-
+public record User(String username, String password, boolean admin) implements Serializable {
     public User() {
-        this.username = null;
-        this.password = null;
-        this.admin = false;
+        this(null, null, false);
     }
 
     @JsonCreator
@@ -30,24 +21,7 @@ public class User implements Serializable {
         this.admin = admin;
     }
 
-    public static Comment create(String authorUsername, String content) {
-        return new Comment(
-                UUID.randomUUID(),
-                authorUsername,
-                content,
-                LocalDateTime.now()
-        );
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public boolean isAdmin() {
-        return admin;
+    public static User create(String username, String password, boolean admin) {
+        return new User(username, password, admin);
     }
 }
