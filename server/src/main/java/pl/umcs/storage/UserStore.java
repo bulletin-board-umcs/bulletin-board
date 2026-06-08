@@ -95,16 +95,6 @@ public class UserStore {
         }
     }
 
-//    public void addUser(User user) {
-//        lock.writeLock().lock();
-//        try {
-//            users.put(user.getUsername(), user);
-//            persist();
-//        } finally {
-//            lock.writeLock().unlock();
-//        }
-//    }
-
     public String hash(String text) {
         return Integer.toHexString(text.hashCode());
     }
