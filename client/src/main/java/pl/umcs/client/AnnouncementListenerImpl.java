@@ -31,5 +31,6 @@ public class AnnouncementListenerImpl extends UnicastRemoteObject
         System.out.println("║  Author : " + announcement.getAuthorUsername());
         System.out.println("║  ID     : " + announcement.getId());
         System.out.println("╚" + "═".repeat(50));
+        System.out.print("Choice: ");
     }
 }
